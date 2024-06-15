@@ -204,6 +204,10 @@
   hint: See the 'Note about fast-forwards' in 'git push --help' for details.
   ```
 
+* 最佳实践
+
+  关联仓库时，本地先别提交，先拉取README.md，再push
+
 * 删除远程库
 
 `git remote rm <remote_name>`
