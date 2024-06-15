@@ -5,7 +5,9 @@
 ### ideas
 
 [志愿者管理系统](ideas/志愿者管理系统.md)
+
 [EASYX](ideas/EASYX.md)
+
 [To Do List](ideas/To_Do_List.md)
 [cs1.6 ai图像识别自动瞄准](ideas/cs1.6_ai图像识别自动瞄准.md)
 [cs2](ideas/cs2.md)
