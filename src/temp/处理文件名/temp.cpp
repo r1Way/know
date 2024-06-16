@@ -18,7 +18,10 @@ string deal(string str)
 
 int main()
 {
-	fstream fcin("file.txt",ios::in);
+	string txtName; 
+	cout<<"ÊäÈëtxtÃû×ÖÈçfile.txt :";
+	cin>>txtName; 
+	fstream fcin(txtName.c_str(),ios::in);
 	string str;
 	string category;
 	fstream fcout("fileout.txt",ios::app);
@@ -26,7 +29,7 @@ int main()
 	cin>>category; 
 	while(getline(fcin,str))
 	{
-		fcout<<"- ["<<deal(str)<<"]("<<category<<"/"<<str<<")"<<"\n\n";
+		fcout<<"* ["<<deal(str)<<"]("<<category<<"/"<<str<<")"<<"\n\n";
 	}
 	return 0;
 } 
