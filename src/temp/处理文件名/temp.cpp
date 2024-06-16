@@ -26,7 +26,7 @@ int main()
 	cin>>category; 
 	while(getline(fcin,str))
 	{
-		fcout<<"["<<deal(str)<<"]("<<"../"<<category<<"/"<<str<<")"<<"\n\n";
+		fcout<<"### ["<<deal(str)<<"]("<<category<<"/"<<str<<")"<<"\n\n";
 	}
 	return 0;
 } 
