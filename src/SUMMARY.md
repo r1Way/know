@@ -1,8 +1,8 @@
 # Summary
 
-- [常用 always](catelogue/always.md)
+## [常用 always](catelogue/always.md)
 
-###  [Git](always/GIT.md)
+*  [Git](always/GIT.md)
 
 ## [想法 ideas](catelogue/ideas.md)
 
