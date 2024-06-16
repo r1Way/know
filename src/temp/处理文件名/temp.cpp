@@ -20,10 +20,13 @@ int main()
 {
 	fstream fcin("file.txt",ios::in);
 	string str;
+	string category;
 	fstream fcout("fileout.txt",ios::app);
+	cout<<"输入文件夹名:";
+	cin>>category; 
 	while(getline(fcin,str))
 	{
-		fcout<<"["<<deal(str)<<"](ideas"<<char(47)<<str<<")"<<"\n";
+		fcout<<"["<<deal(str)<<"]("<<"../"<<category<<"/"<<str<<")"<<"\n\n";
 	}
 	return 0;
 } 
