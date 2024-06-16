@@ -1,10 +1,10 @@
 # Summary
 
-## [常用 always](catelogue/always.md)
+## 常用 always 
 
 *  [Git](always/GIT.md)
 
-## [想法 ideas](catelogue/ideas.md)
+## 想法 ideas
 
 * [EASYX](ideas/EASYX.md)
 
@@ -80,7 +80,7 @@
 
 
 
-## [系统知识 learn](catelogue/learn.md)
+## 系统知识 learn
 
 * [51单片机学习](learn/51单片机学习.md)
 
@@ -103,5 +103,5 @@
 * [问题](learn/问题.md)
 
 
-## [临时 temp](catelogue/temp.md)
+## 临时 temp
 
