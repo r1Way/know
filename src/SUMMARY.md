@@ -2,7 +2,7 @@
 
 # 常用 always 
 
-*  [Git](always/GIT.md)
+*  [Git](always/Git.md)
 
 # 想法 ideas
 
