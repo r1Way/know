@@ -4,7 +4,7 @@
 
 #### The link items for nested chapters must only contain a hyperlink
 
-* 
+* 报错
 
 ```shell
 2024-06-17 07:06:54 [WARN] (mdbook::book::summary): Expected a start of a link, actually got Some(Text(Borrowed("常用 always")))
@@ -37,6 +37,18 @@ Error: Process completed with exit code 101
 ```
 
 在这个例子中，我添加了 `always.md`、`ideas.md`、`learn.md` 和 `temp.md` 这四个链接。你需要在相应的位置创建这些文件，或者将链接改为已经存在的文件。
+
+###  
+
+* UTF-8
+
+```shell
+Error: -17 09:53:19 [ERROR] (mdbook::utils): Error: Unable to read "处理文件名" (/home/runner/work/know/know/src/temp/处理文件名/temp.md)
+Error: -17 09:53:19 [ERROR] (mdbook::utils): 	Caused By: stream did not contain valid UTF-8
+Error: Process completed with exit code 101.
+```
+
+* 解决
 
 ### 参考
 - [部署 mdbook 到 github pages (blackcloud37.github.io)](https://blackcloud37.github.io/mdbook-blog/misc/deploy-mdbook.html)
