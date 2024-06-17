@@ -1,16 +1,12 @@
 # Summary
 
-- 常用 always 
+- 常用 always
   - [Git](always/Git.md)
 
 - 想法 ideas
-
   - [EASYX](ideas/EASYX.md)
-
   - [To_Do_List](ideas/To_Do_List.md)
-
   - [cs1.6_ai图像识别自动瞄准](ideas/cs1.6_ai图像识别自动瞄准.md)
-
   - [cs2](ideas/cs2.md)
 
   - [cs剪辑](ideas/cs剪辑.md)
