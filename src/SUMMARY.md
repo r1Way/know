@@ -52,5 +52,3 @@
     - [电子学作业](learn/电子学作业.md)
     - [问题](learn/问题.md)
 - [临时 temp](./temp.md)
-    - [temp2.md](temp/temp2.md)
-
