@@ -61,6 +61,13 @@ Error: -17 10:03:44 [ERROR] (mdbook::utils): 	Caused By: stream did not contain 
 Error: Process completed with exit code 101.
 ```
 
+```shell
+Run mdbook build
+Error: -17 10:11:00 [ERROR] (mdbook::utils): Error: Unable to read "deal filename" (/home/runner/work/know/know/src/temp/deal_file_name/temp.md)
+Error: -17 10:11:00 [ERROR] (mdbook::utils): 	Caused By: stream did not contain valid UTF-8
+Error: Process completed with exit code 101.
+```
+
 
 
 * 解决
@@ -71,3 +78,4 @@ Error: Process completed with exit code 101.
 - [通过mdBook制作图书 - mdBook 中文指南 （非官方） (xihaduanzi.github.io)](https://xihaduanzi.github.io/mdBook_guide_cn/guide/creating.html)
 - [jekyll - "There isn't a GitHub Pages site here." - Stack Overflow](https://stackoverflow.com/questions/46759097/there-isnt-a-github-pages-site-here)
 - [mdBook/guide/src/SUMMARY.md at master · rust-lang/mdBook (github.com)](https://github.com/rust-lang/mdBook/blob/master/guide/src/SUMMARY.md?plain=1)
+
