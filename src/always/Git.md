@@ -164,6 +164,8 @@
 
 `git pull <SSH>`
 
+`git pull <远程库别名> <远程branch>:<本地branch>`
+
 ### 推送更新（本地到远程）
 
 `git push <remote库><本地branch>:<远程branch>`
@@ -343,4 +345,35 @@ http://t.csdnimg.cn/BhONz
 
 * set number! 显示行号
 * split水平线分割，vsplit竖直线分割
-* 
+
+## Trouble Shooting
+
+* 打开`git log --oneline`后，无法退出
+
+  * 按q
+
+* git pull后因为conflict跟本地分支merge了
+
+  * vi 修改冲突后，add commit，后main|MERGING就消失了
+
+  * ```shell
+    刘星池@river-away MINGW64 /g/know/src (main)
+    $ git pull
+    Auto-merging src/SUMMARY.md
+    CONFLICT (content): Merge conflict in src/SUMMARY.md
+    Automatic merge failed; fix conflicts and then commit the result.
+    
+    刘星池@river-away MINGW64 /g/know/src (main|MERGING)
+    $ vi SUMMARY.md
+    
+    刘星池@river-away MINGW64 /g/know/src (main|MERGING)
+    $ git add .
+    
+    刘星池@river-away MINGW64 /g/know/src (main|MERGING)
+    $ git commit -m"deal merge"
+    [main 66f29ba] deal merge
+    
+    刘星池@river-away MINGW64 /g/know/src (main)
+    $ git push
+    
+    ```
