@@ -48,6 +48,21 @@ Error: -17 09:53:19 [ERROR] (mdbook::utils): 	Caused By: stream did not contain 
 Error: Process completed with exit code 101.
 ```
 
+```shell
+Error: -17 09:58:45 [ERROR] (mdbook::utils): Error: Unable to read "处理文件名" (/home/runner/work/know/know/src/temp/deal-file-name/temp.md)
+Error: -17 09:58:45 [ERROR] (mdbook::utils): 	Caused By: stream did not contain valid UTF-8
+Error: Process completed with exit code 101.
+```
+
+```shell
+Run mdbook build
+Error: -17 10:03:44 [ERROR] (mdbook::utils): Error: Unable to read "deal filename" (/home/runner/work/know/know/src/temp/deal-file-name/temp.md)
+Error: -17 10:03:44 [ERROR] (mdbook::utils): 	Caused By: stream did not contain valid UTF-8
+Error: Process completed with exit code 101.
+```
+
+
+
 * 解决
 
 ### 参考

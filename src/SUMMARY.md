@@ -52,4 +52,4 @@
     - [电子学作业](learn/电子学作业.md)
     - [问题](learn/问题.md)
 - [临时 temp](./temp.md)
-    - [deal filename](temp/deal-file-name/temp.md)
+    - [deal filename](temp/deal_file_name/temp.md)
