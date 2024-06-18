@@ -78,4 +78,5 @@ Error: Process completed with exit code 101.
 - [通过mdBook制作图书 - mdBook 中文指南 （非官方） (xihaduanzi.github.io)](https://xihaduanzi.github.io/mdBook_guide_cn/guide/creating.html)
 - [jekyll - "There isn't a GitHub Pages site here." - Stack Overflow](https://stackoverflow.com/questions/46759097/there-isnt-a-github-pages-site-here)
 - [mdBook/guide/src/SUMMARY.md at master · rust-lang/mdBook (github.com)](https://github.com/rust-lang/mdBook/blob/master/guide/src/SUMMARY.md?plain=1)
+- [mdbook | 小霖家的混江龙 (lijunlin2022.github.io)](https://lijunlin2022.github.io/docs/tool/mdbook/)
 

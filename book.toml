@@ -4,3 +4,5 @@ language = "en"
 multilingual = false
 src = "src"
 title = "know"
+[output.html]
+additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js"]
