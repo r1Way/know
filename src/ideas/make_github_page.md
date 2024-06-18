@@ -1,3 +1,7 @@
+[toc]
+
+
+
 ## 制作自己的github page
 
 ### 功能开发
@@ -18,6 +22,10 @@ additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js"]
 ```
 
 > [mdbook | 小霖家的混江龙 (lijunlin2022.github.io)](https://lijunlin2022.github.io/docs/tool/mdbook/)
+
+* 自动生成目录
+
+在markdown文件第一行，输入`[toc]`并敲击回车
 
 ### Trouble Shooting 
 
