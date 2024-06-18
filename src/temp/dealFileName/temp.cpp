@@ -24,7 +24,7 @@ int main()
 	fstream fcin(txtName.c_str(),ios::in);
 	string str;
 	string category;
-	fstream fcout("fileout.txt",ios::app);
+	fstream fcout("fileout.txt",ios::out);
 	cout<<"输入文件夹名:";
 	cin>>category; 
 	while(getline(fcin,str))
