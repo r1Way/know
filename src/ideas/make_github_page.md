@@ -23,13 +23,15 @@ additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js"]
 
 > [mdbook | 小霖家的混江龙 (lijunlin2022.github.io)](https://lijunlin2022.github.io/docs/tool/mdbook/)
 
-* 自动生成目录
+* 自动生成目录（！！mdbook无法显示）
 
 在markdown文件第一行，输入`[toc]`并敲击回车
 
-### Trouble Shooting 
+### 解决异常 Trouble Shooting  
 
 #### The link items for nested chapters must only contain a hyperlink
+
+> 经过测试，该方法在Typora可以进行，但在mdbook中无法生成。
 
 * 报错
 
@@ -99,6 +101,46 @@ Error: Process completed with exit code 101.
 
 * 解决
 
+似乎是因为之前temp.md是我由temp.txt更改拓展名得到的，因此出现了问题。
+
+#### Redefinition & Duplicate
+
+```shell
+Run mdbook build
+Error: -19 07:11:54 [ERROR] (mdbook::utils): Error: Invalid configuration file
+Error: -19 07:11:54 [ERROR] (mdbook::utils): 	Caused By: redefinition of table `output.html` for key `output.html` at line 9 column 1
+Error: Process completed with exit code 101.
+```
+
+```shell
+Error: -19 07:17:00 [ERROR] (mdbook::utils): Error: Invalid configuration file
+Error: -19 07:17:00 [ERROR] (mdbook::utils): 	Caused By: duplicate key: `additional-js` for key `output.html` at line 7 column 1
+Error: Process completed with exit code 101.
+```
+
+* 解决
+
+因为我之前还配置了中文搜索，之后又加上了右边栏目录，所以我的book.toml出现了
+
+```toml
+[output.html]
+additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js"]
+[output.html]
+additional-css = ["theme/pagetoc.css"]
+additional-js = ["theme/pagetoc.js"]
+```
+
+仅需将上文改为下文即可
+
+```toml
+additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js","theme/pagetoc.js"]
+additional-css = ["theme/pagetoc.css"]
+```
+
+> [Adding a page table of contents to mdBook | Jorel's Blog](https://blog.jorel.dev/posts/mdbook-pagetoc/)
+>
+> [JorelAli/mdBook-pagetoc: A page table of contents for mdBook (github.com)](https://github.com/JorelAli/mdBook-pagetoc)
+
 ### 参考
 - [部署 mdbook 到 github pages (blackcloud37.github.io)](https://blackcloud37.github.io/mdbook-blog/misc/deploy-mdbook.html)
 - [GitHub Pages documentation - GitHub Docs](https://docs.github.com/en/pages)
@@ -106,4 +148,6 @@ Error: Process completed with exit code 101.
 - [jekyll - "There isn't a GitHub Pages site here." - Stack Overflow](https://stackoverflow.com/questions/46759097/there-isnt-a-github-pages-site-here)
 - [mdBook/guide/src/SUMMARY.md at master · rust-lang/mdBook (github.com)](https://github.com/rust-lang/mdBook/blob/master/guide/src/SUMMARY.md?plain=1)
 - [mdbook | 小霖家的混江龙 (lijunlin2022.github.io)](https://lijunlin2022.github.io/docs/tool/mdbook/)
+- [Adding a page table of contents to mdBook | Jorel's Blog](https://blog.jorel.dev/posts/mdbook-pagetoc/)
+- [JorelAli/mdBook-pagetoc: A page table of contents for mdBook (github.com)](https://github.com/JorelAli/mdBook-pagetoc)
 
