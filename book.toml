@@ -6,3 +6,6 @@ src = "src"
 title = "know"
 [output.html]
 additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js"]
+[output.html]
+additional-css = ["theme/pagetoc.css"]
+additional-js = ["theme/pagetoc.js"]
