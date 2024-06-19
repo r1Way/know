@@ -5,6 +5,5 @@ multilingual = false
 src = "src"
 title = "know"
 [output.html]
-additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js"]
+additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js","theme/pagetoc.js"]
 additional-css = ["theme/pagetoc.css"]
-additional-js = ["theme/pagetoc.js"]
