@@ -4,6 +4,7 @@
 - [常用 always](./always.md)
   - [Git](always/Git.md)
 - [想法 ideas](./ideas.md)
+    - [web前端](ideas/web前端.md)
     - [EASYX](ideas/EASYX.md)
     - [To_Do_List](ideas/To_Do_List.md)
     - [cs1.6_ai图像识别自动瞄准](ideas/cs1.6_ai图像识别自动瞄准.md)
@@ -39,7 +40,7 @@
     - [视线跟踪台灯](ideas/视线跟踪台灯.md)
     - [训练自己文本的GPT](ideas/训练自己文本的GPT.md)
     - [键盘操作与神经网络](ideas/键盘操作与神经网络.md)
-
+    
 - [系统知识 learn](./learn.md)
     - [51单片机学习](learn/51单片机学习.md)
     - [MarkDown教程](learn/MarkDown教程.md)

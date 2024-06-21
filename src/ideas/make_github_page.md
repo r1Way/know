@@ -6,7 +6,7 @@
 
 ### 功能开发
 
-* 中文
+#### 中文
 
 [中文搜索](https://lijunlin2022.github.io/docs/tool/mdbook/#中文搜索)
 
@@ -23,9 +23,21 @@ additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js"]
 
 > [mdbook | 小霖家的混江龙 (lijunlin2022.github.io)](https://lijunlin2022.github.io/docs/tool/mdbook/)
 
-* 自动生成目录（！！mdbook无法显示）
+#### 自动生成目录
+
+* 法一（！！mdbook无法显示）
 
 在markdown文件第一行，输入`[toc]`并敲击回车
+
+* 法二
+
+> [Adding a page table of contents to mdBook | Jorel's Blog](https://blog.jorel.dev/posts/mdbook-pagetoc/)
+>
+> [JorelAli/mdBook-pagetoc: A page table of contents for mdBook (github.com)](https://github.com/JorelAli/mdBook-pagetoc)
+
+#### 更换字体
+
+> [Renderers - mdBook Documentation (rust-lang.github.io)](https://rust-lang.github.io/mdBook/format/configuration/renderers.html)
 
 ### 解决异常 Trouble Shooting  
 
@@ -69,7 +81,7 @@ Error: Process completed with exit code 101
 
 ###  
 
-* UTF-8
+#### UTF-8
 
 ```shell
 Error: -17 09:53:19 [ERROR] (mdbook::utils): Error: Unable to read "处理文件名" (/home/runner/work/know/know/src/temp/处理文件名/temp.md)

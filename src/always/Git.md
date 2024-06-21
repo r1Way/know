@@ -339,6 +339,37 @@ http://t.csdnimg.cn/BhONz
 
 > 注意是右斜线（反斜杠\)
 
+## Trouble Shooting
+
+### ` (use "git restore <file>..." to discard changes in working directory)`
+
+```shell
+$ git commit -m"commit error refer to the last time"
+On branch temp
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   ../project/.vs/project/v15/.suo
+        modified:   ../project/.vs/project/v15/Browse.VC.db
+        modified:   ../project/.vs/project/v15/ipch/AutoPCH/c8e138fe51f15a31/GATE.ipch
+        modified:   ../project/project/Element.h
+        modified:   ../project/project/Gate.h
+        modified:   ../project/project/project.vcxproj
+        modified:   ../project/project/project.vcxproj.filters
+        modified:   ../project/project/project.vcxproj.user
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        ../project/project/Event.h
+        ../project/project/Time.h
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+* 解决
+
+  回到上一目录（project)，`git add .`才能将我所有的文件提交完。
+
 ## Vim
 
 * 按到ctrl+c退出时
