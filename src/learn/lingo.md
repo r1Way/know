@@ -82,3 +82,20 @@ Min=@sum(set(i):f(i));
 end
 ```
 
+### @cos(x)
+
+```shell
+model:
+sets:
+	set/1..5/:f,theta;
+endsets
+
+@for(set(i):f(i)=@cos(i));
+
+Min=@sum(set(i):f(i));
+
+@for(set(i):@free(f(i)));
+
+end
+```
+

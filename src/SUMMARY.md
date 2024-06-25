@@ -61,4 +61,5 @@
     - [matlab三维路径规划绘图.md](temp\matlab三维路径规划绘图.md)
     - [matlab绘制datetime与因变量关系图.md](temp\matlab绘制datetime与因变量关系图.md) 
     - [matlab求解非线性方程组](temp/matlab求解非线性方程组.md)
+    - [matlab利用最优化解决非线性微分方程](temp/matlab利用最优化解决非线性微分方程.md)
 
