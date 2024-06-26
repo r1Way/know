@@ -153,6 +153,12 @@ additional-css = ["theme/pagetoc.css"]
 >
 > [JorelAli/mdBook-pagetoc: A page table of contents for mdBook (github.com)](https://github.com/JorelAli/mdBook-pagetoc)
 
+#### 本地能打开，网上打不开。
+
+* 解决
+
+  描述文件路径的时候用`/`而不是`\`
+
 ### 参考
 - [部署 mdbook 到 github pages (blackcloud37.github.io)](https://blackcloud37.github.io/mdbook-blog/misc/deploy-mdbook.html)
 - [GitHub Pages documentation - GitHub Docs](https://docs.github.com/en/pages)
