@@ -62,4 +62,9 @@
     - [matlab绘制datetime与因变量关系图.md](temp\matlab绘制datetime与因变量关系图.md) 
     - [matlab求解非线性方程组](temp/matlab求解非线性方程组.md)
     - [matlab利用最优化解决非线性微分方程](temp/matlab利用最优化解决非线性微分方程.md)
-
+    - [matlab line 宽度，颜色](temp/line_width_color.md)
+    - [matlab 求函数零点](temp/求函数零点.md)
+    - [matlab x轴与y轴单位长度相同](temp/x_y.md)
+    - [matlab 让原点在右上角，x轴向左，y轴向右](temp/x_y_point.md)
+    - [matlab 绘制圆形](temp/circle.md)
+    - [matlab 三维空间中的汉字](temp/三维空间中的汉字.md)
