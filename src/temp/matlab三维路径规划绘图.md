@@ -1,6 +1,6 @@
 ##  matlab三维路径规划绘图.md
 
-![temp_matlab_road](../image/temp_matlab_road.png)
+![temp_matlab_road](../../image/temp_matlab_road.png)
 
 ### 绘制立方体
 
