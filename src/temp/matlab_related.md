@@ -218,3 +218,81 @@ b=gpuArray(a);%b在gpu里进行计算
 * parfor 并行循环
 
 > [简单看看matlab的GPU加速](https://www.bilibili.com/video/BV1E341167Hf?vd_source=ec4e4974e1b56ed330afdb6c6ead1501)
+
+## 一阶微分方程
+
+* 代码
+
+```matlab
+%deal.m
+function f=deal(t,y)
+    f=(y^2-t-2)/(4*(t+1));
+end
+```
+
+```matlab
+%test.m
+[t,y]=ode45('deal',[0,2],0);
+plot(t,y);
+```
+
+* 效果
+
+![4ee8d075542d410222899a1fde32f53b](../image/4ee8d075542d410222899a1fde32f53b.png)
+
+* 带参数
+
+```matlab
+%直线阻尼器的阻尼系数为常数
+function f=myODE(t,x,a)    %a为直线阻尼系数
+    k1=1025*9.8*pi*1^2;%静力回复系数
+    k2=656.3616;%兴波阻力系数
+    k3=80000;%弹簧刚度
+    m1=2433;%振子质量
+    m2=4866;%浮子质量
+    m3=1335.535;%附加质量
+    w=1.4005;%入射波浪频率
+    f=6250;%垂荡激励力振幅 (N)
+    %{
+    x1 振子位移，向上为正
+    x2 浮子位移，向上为正
+    x3=diff(x1)
+    x4=diff(x2)
+    %}
+    f=[
+        x(3);
+        x(4);
+        ( -k3*(x(1)-x(2))-a*(x(3)-x(4)) )/(m1);
+        ( f*cos(w*t)-k1*x(2)-k2*x(4)+k3*(x(1)-x(2))+a*(x(3)-x(4)) )/(m2+m3);
+    ];
+end
+```
+
+```matlab
+%main.m
+[t,x]=ode45(@(t,x)myODE1(t,x,a),[0,40*2*pi/w],[0,0,0,0]);%括号一
+```
+
+> 可正常运行
+
+## 一阶微分方程组
+
+```matlab
+function f=deal(t,y)
+    f=[1;y(1)];
+end
+```
+
+```matlab
+options = odeset('MaxStep', 1);
+[t,y]=ode45('deal',[0,10],[0,0],options);
+figure;
+hold on;
+plot(t,y(:,2));
+```
+
+* 效果
+
+![2ddd1f054574b1e3d7492ae106bf0ea8](../image/2ddd1f054574b1e3d7492ae106bf0ea8.png)
+
+![013a566a6ca71e3185bfff022f1bb03d](../image/013a566a6ca71e3185bfff022f1bb03d.png)
