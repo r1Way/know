@@ -296,3 +296,12 @@ plot(t,y(:,2));
 ![2ddd1f054574b1e3d7492ae106bf0ea8](../image/2ddd1f054574b1e3d7492ae106bf0ea8.png)
 
 ![013a566a6ca71e3185bfff022f1bb03d](../image/013a566a6ca71e3185bfff022f1bb03d.png)
+
+## 获取矩阵最大/最小元素及索引
+
+```matlab
+[power_max,power_pos]=max(power_sum);
+[maxVal, linearIndex] = max(power_sum(:));% 获取最小值和线性索引
+[row, col] = ind2sub(size(power_sum), linearIndex);% 将线性索引转换为行列索引
+```
+
