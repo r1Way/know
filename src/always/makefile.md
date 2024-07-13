@@ -323,3 +323,261 @@ main_o:
 ```
 
 * target的各个目标有顺序，先进行add_o再进行main_o，最后进行main
+
+# Makefile升级用法
+
+## 模式规则
+
+```makefile
+target: add.o main.o main
+
+main:
+	g++ add.o main.o -o main
+
+%.o: %.cpp
+	g++ -I. -c $< -o $@
+```
+
+* 说明
+
+  * `%.o:%.cpp` 所有的.o文件都由相同名称的 .cpp文件编译生成
+  * `<`表示第一个依赖值
+  * `^`表示所有依赖的挨个值
+  * `@`表示所有目标的挨个值
+
+  >  “<” ，“@” 被称为自动化变量
+
+## 变量替换
+
+```makefile
+OBJS = main.o add.o
+
+target: $(OBJS) main
+
+main:
+	g++ $(OBJS) -o main
+
+%.o: %.cpp
+	g++ -I. -c $< -o $@
+```
+
+说明
+
+* 引用变量时，加上小括号或大括号，这样可以更安全
+* `=`是最基本的变量
+* `:=`是覆盖之前的值
+* `?=`是如果没有被赋值过，就赋予等号后面的值
+* `+=`是添加等号后面的值
+
+## 清理文件
+
+* PowerShell
+
+  ```makefile
+  OBJS = main.o add.o
+  
+  target: $(OBJS) main
+  
+  main:
+  	g++ $(OBJS) -o main
+  
+  %.o: %.cpp
+  	g++ -I. -c $< -o $@
+  
+  clean:
+  	del $(OBJS) main.exe
+  ```
+
+* Bash
+
+  ```makefile
+  OBJS = main.o add.o
+  
+  target: $(OBJS) main
+  
+  main:
+  	g++ $(OBJS) -o main
+  
+  %.o: %.cpp
+  	g++ -I. -c $< -o $@
+  
+  clean:
+  	rm -rf $(OBJS) main
+  ```
+
+  
+
+# Makefile高级用法
+
+## 文件过滤
+
+```makefile
+SRCS := $(shell find ./* -type f | grep '\.cpp')
+$(warning SRCS is $(SRCS))
+
+OBJS :=$(patsubst %.cpp, %.o,$(filter %.cpp, $(SRCS)))
+$(warning OBJS is $(OBJS))
+
+target: $(OBJS) main
+
+main:
+	g++ $(OBJS) -o main
+
+%.o: %.cpp
+	g++ -I. -c $< -o $@
+
+clean:
+	rm -rf *.o main	
+```
+
+## 编译选项
+
+```makefile
+SRCS := $(shell find ./* -type f | grep '\.cpp')
+$(warning SRCS is $(SRCS))
+
+OBJS :=$(patsubst %.cpp, %.o,$(filter %.cpp, $(SRCS)))
+$(warning OBJS is $(OBJS))
+
+#编译选项
+CFLAGS := -g  -o2 -Wall -Werror -Wno-unused -ldl -std=c++11
+
+#搜索路径
+INCLUDE := -I.
+
+target: $(OBJS) main
+
+main:
+	g++ $(OBJS) -o main
+
+%.o: %.cpp
+	g++ $(INCLUDE) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -rf *.o main	
+```
+
+# Makefile 多入口编译
+
+## 多入口
+
+```makefile
+CC := g++
+
+SRCS := $(shell find ./* -type f | grep '\.cpp' | grep -v './main\.cpp' | grep -v './test\.cpp')
+$(warning SRCS is $(SRCS))
+
+OBJS :=$(patsubst %.cpp, %.o,$(filter %.cpp, $(SRCS)))
+$(warning OBJS is $(OBJS))
+
+#搜索路径
+INCLUDE := -I.
+
+MAIN_SRC :=main.cpp
+MAIN_OBJ :=$(patsubst %.cpp,%.o,$(MAIN_SRC))
+$(warning $(MAIN_OBJ))
+MAIN_EXE :=main
+
+TEST_SRC :=test.cpp
+TEST_OBJ :=$(patsubst %.cpp,%.o,$(TEST_SRC))
+$(warning $(TEST_OBJ))
+TEST_EXE :=test
+
+target:$(MAIN_EXE) $(TEST_EXE)
+
+$(MAIN_EXE):$(OBJS) $(MAIN_OBJ) 
+	$(CC)  -o $@ $^ $(INCLUDE) 
+
+$(TEST_EXE):$(OBJS) $(TEST_OBJ) 
+	$(CC)  -o $@ $^ $(INCLUDE) 
+
+%.o: %.cpp
+	$(CC) $(INCLUDE) -c $< -o $@
+
+clean:
+	rm -rf *.o $(MAIN_EXE) $(TEST_EXE)
+```
+
+* `$(patsubst %.cpp,%.o,$(MAIN_SRC))`表示将`MAIN_SRC`中的所有.cpp文件替换为.o的文件赋值给`MAIN_OBJ`
+
+## 单入口模板
+
+```makefile
+#设置编译器
+CC := g++
+
+SRCS := $(shell find ./* -type f | grep '\.cpp' | grep -v './main\.cpp')
+$(warning SRCS is $(SRCS))
+
+OBJS :=$(patsubst %.cpp, %.o,$(filter %.cpp, $(SRCS)))
+$(warning OBJS is $(OBJS))
+
+#搜索路径
+INCLUDE := -I.
+
+MAIN_SRC :=main.cpp
+MAIN_OBJ :=$(patsubst %.cpp,%.o,$(MAIN_SRC))
+MAIN_EXE :=main
+
+target:$(MAIN_EXE) 
+$(MAIN_EXE):$(OBJS) $(MAIN_OBJ) 
+	$(CC)  -o $@ $^ $(INCLUDE) 
+
+%.o: %.cpp
+	$(CC) $(INCLUDE) -c $< -o $@
+
+clean:
+	rm -rf *.o $(MAIN_EXE) 
+```
+
+
+
+## inc 、src
+
+* 结构图
+
+```she
+|-inc
+|  └add.h
+|-src
+|  └add.cpp
+|-main.cpp
+|-Makefile
+```
+
+* 将 add.cpp 挪到 src 目录下仍然可以正常编译
+* 将 add.h、sub.h 挪到 inc目录下只需修改 INCLUDE 即可
+
+```makefile
+#设置编译器
+CC := g++
+
+SRCS := $(shell find ./* -type f | grep '\.cpp' | grep -v './main\.cpp')
+$(warning SRCS is $(SRCS))
+
+OBJS :=$(patsubst %.cpp, %.o,$(filter %.cpp, $(SRCS)))
+$(warning OBJS is $(OBJS))
+
+#搜索路径
+INCLUDE := -I. -I ./inc
+
+MAIN_SRC :=main.cpp
+MAIN_OBJ :=$(patsubst %.cpp,%.o,$(MAIN_SRC))
+MAIN_EXE :=main
+
+target:$(MAIN_EXE) 
+$(MAIN_EXE):$(OBJS) $(MAIN_OBJ) 
+	$(CC)  -o $@ $^ $(INCLUDE) 
+
+%.o: %.cpp
+	$(CC) $(INCLUDE) -c $< -o $@
+
+clean:
+	rm -rf *.o $(MAIN_EXE) 
+```
+
+# 静态库 动态库
+
+P11 P12
+
+> 【如何编译 C++ 程序：轻松搞定 Makefile】https://www.bilibili.com/video/BV1dF41117NV?p=11&vd_source=ec4e4974e1b56ed330afdb6c6ead1501
