@@ -2,6 +2,69 @@
 
 > [如何编译 C++ 程序：轻松搞定 Makefile](https://www.bilibili.com/video/BV1dF41117NV?p=2&vd_source=ec4e4974e1b56ed330afdb6c6ead1501)
 
+## 示例
+
+```makefile
+#设置编译器
+CC := g++
+
+SRCS := $(shell find ./* -type f | grep '\.cpp' | grep -v './main\.cpp')
+$(warning SRCS is $(SRCS))
+
+OBJS :=$(patsubst %.cpp, %.o,$(filter %.cpp, $(SRCS)))
+$(warning OBJS is $(OBJS))
+
+#搜索路径
+INCLUDE := -I.
+
+MAIN_SRC :=main.cpp
+MAIN_OBJ :=$(patsubst %.cpp,%.o,$(MAIN_SRC))
+MAIN_EXE :=main
+
+target:$(MAIN_EXE) 
+$(MAIN_EXE):$(OBJS) $(MAIN_OBJ) 
+	$(CC)  -o $@ $^ $(INCLUDE) 
+
+%.o: %.cpp
+	$(CC) $(INCLUDE) -c $< -o $@
+
+clean:
+	rm -rf *.o $(MAIN_EXE) 
+```
+
+* 代码
+
+main.cpp
+
+```c++
+#include<iostream>
+#include"add.h"
+int main()
+{
+    std::cout<<"result: "<<add(3,5)<<std::endl;
+    return 0;
+}
+```
+
+add.h
+
+```c++
+#pragma once
+int add(int a,int b);
+```
+
+add.cpp
+
+```c++
+#include"add.h"
+int add(int a,int b)
+{
+    return a+b;
+}
+```
+
+
+
 # 编译一个简单的程序
 
 ## gcc

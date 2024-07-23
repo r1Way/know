@@ -62,7 +62,13 @@
 
 > [使用 CodeQL 查询分析代码 - GitHub 文档](https://docs.github.com/zh/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries)
 
+## 数据库
 
+### 介绍
+
+​	CodeQL databases contain queryable data extracted from a codebase, for a single language at a particular point in time. The database contains a full, hierarchical representation of the code, including a representation of the abstract syntax tree, the data flow graph, and the control flow graph.
+
+> [About CodeQL — CodeQL (github.com)](https://codeql.github.com/docs/codeql-overview/about-codeql/#about-codeql-databases)
 
 ## Codeql 语法
 
@@ -117,9 +123,31 @@ https://codeql.github.com/docs/writing-codeql-queries/defining-the-results-of-a-
 
 [Defining the results of a query — CodeQL (github.com)](
 
+## Codeql参考
+
+### Variables
+
+* Free and bound variables
+
+```sql
+"hello".indexOf("l") = 1
+
+min(float f | f in [-3 .. 3]) = -3
+
+(i + 7) * 3 instanceof int
+
+exists(float y | x.sqrt() = y)
+```
+
+
+
+> [Variables — CodeQL (github.com)](https://codeql.github.com/docs/ql-language-reference/variables/#free-and-bound-variables)
+
 ## Codeql 重要库
 
 > [CodeQL library for C and C++ — CodeQL (github.com)](https://codeql.github.com/docs/codeql-language-guides/codeql-library-for-cpp/)
+>
+> [QL language reference — CodeQL (github.com)](https://codeql.github.com/docs/ql-language-reference/)
 
 ### 重要接口
 
@@ -351,6 +379,114 @@ test1 call ::test2","/main.cpp","8","5","8","9"
 "Find enclosing variate","A ql to find enclosing variate.","recommendation","::test1 calls ::num1","/main.cpp","8","5","8","9"
 ```
 
+### flow1
+
+* 代码
+
+```sql
+/**
+ * @name Data flow
+ * @description A ql to trace dataflow
+ * @kind problem 
+ * @problem.severity recommendation
+ * @id cpp/flow
+ */
+
+ import cpp
+ import semmle.code.cpp.dataflow.new.DataFlow
+
+ from DataFlow::Node nodeFrom, DataFlow::Node nodeTo,Parameter source,Parameter sink
+ where nodeFrom.asParameter() = source and
+ nodeTo.asParameter() = sink and
+ DataFlow::localFlow(nodeFrom, nodeTo)
+ select nodeFrom,"from "+nodeFrom.toString()+" to "+nodeTo.toString()+" source: "+source.toString()+
+ " sink : "+sink.toString()
+```
+
+#### 源文件1
+
+```c++
+#include<iostream>
+using namespace std;
+
+int test1(int a);
+int test2(int b);
+
+int test1(int a)
+{
+    cout<<"this is test 1\n";
+    cout<<"a: "<<a<<endl;
+    int num1=1;
+    test2(a);
+    return 0;
+}
+
+int test2(int b)
+{
+    cout<<"this is test 2\n";
+    cout<<"b: "<<b<<endl;   
+    return b;
+}
+
+
+int main()
+{
+    int num=1;
+    test1(num);
+    return 0;
+}
+```
+
+* 结果1
+
+```shell
+"Data flow","A ql to trace dataflow","recommendation","from b to b source: b sink : b","/main.cpp","16","15","16","15"
+```
+
+#### 源文件2
+
+```c++
+#include<iostream>
+using namespace std;
+
+int test1(int &a);
+int test2(int &b);
+
+int test1(int &a)
+{
+    cout<<"this is test 1\n";
+    cout<<"a: "<<a<<endl;
+    int num1=1;
+    test2(a);
+    return 0;
+}
+
+int test2(int &b)
+{
+    cout<<"this is test 2\n";
+    cout<<"b: "<<b<<endl;   
+    return b;
+}
+
+
+int main()
+{
+    int num=1;
+    test1(num);
+    return 0;
+}
+```
+
+* 结果
+
+```shell
+"Data flow","A ql to trace dataflow","recommendation","from *b to *b source: b sink : b","/main.cpp","16","16","16","16"
+```
+
+* 结论
+
+`DataFlow::Node`能识别出地址传递还是值传递
+
 
 
 ### rely
@@ -379,4 +515,34 @@ select e,e.toString()
 ```
 
 
+
+### Expr
+
+```shell
+"Data flow","A ql to trace dataflow","recommendation","Expr: num","/main.cpp","27","11","27","13"
+"Data flow","A ql to trace dataflow","recommendation","Expr: cout","/main.cpp","18","5","18","8"
+"Data flow","A ql to trace dataflow","recommendation","Expr: this is test 2
+","/main.cpp","18","11","18","28"
+"Data flow","A ql to trace dataflow","recommendation","Expr: endl","/main.cpp","19","21","19","24"
+"Data flow","A ql to trace dataflow","recommendation","Expr: call to operator<<","/main.cpp","19","16","19","20"
+"Data flow","A ql to trace dataflow","recommendation","Expr: b","/main.cpp","19","18","19","18"
+"Data flow","A ql to trace dataflow","recommendation","Expr: call to operator<<","/main.cpp","19","9","19","17"
+"Data flow","A ql to trace dataflow","recommendation","Expr: cout","/main.cpp","19","5","19","8"
+"Data flow","A ql to trace dataflow","recommendation","Expr: b: ","/main.cpp","19","11","19","15"
+"Data flow","A ql to trace dataflow","recommendation","Expr: cout","/main.cpp","9","5","9","8"
+"Data flow","A ql to trace dataflow","recommendation","Expr: this is test 1
+","/main.cpp","9","11","9","28"
+"Data flow","A ql to trace dataflow","recommendation","Expr: endl","/main.cpp","10","21","10","24"
+"Data flow","A ql to trace dataflow","recommendation","Expr: call to operator<<","/main.cpp","10","16","10","20"
+"Data flow","A ql to trace dataflow","recommendation","Expr: a","/main.cpp","10","18","10","18"
+"Data flow","A ql to trace dataflow","recommendation","Expr: call to operator<<","/main.cpp","10","9","10","17"
+"Data flow","A ql to trace dataflow","recommendation","Expr: cout","/main.cpp","10","5","10","8"
+"Data flow","A ql to trace dataflow","recommendation","Expr: a: ","/main.cpp","10","11","10","15"
+"Data flow","A ql to trace dataflow","recommendation","Expr: a","/main.cpp","12","11","12","11"
+"Data flow","A ql to trace dataflow","recommendation","Expr: b","/main.cpp","20","12","20","12"
+"Data flow","A ql to trace dataflow","recommendation","Expr: 1","/main.cpp","26","13","26","13"
+"Data flow","A ql to trace dataflow","recommendation","Expr: 0","/main.cpp","28","12","28","12"
+"Data flow","A ql to trace dataflow","recommendation","Expr: 1","/main.cpp","11","14","11","14"
+"Data flow","A ql to trace dataflow","recommendation","Expr: 0","/main.cpp","13","12","13","12"
+```
 
