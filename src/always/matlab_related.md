@@ -305,3 +305,81 @@ plot(t,y(:,2));
 [row, col] = ind2sub(size(power_sum), linearIndex);% 将线性索引转换为行列索引
 ```
 
+## 绘制等高地形图，深度图，高度图
+
+```matlab
+filename='attach.xlsx';
+data=readtable(filename);
+
+south_north=table2array(data(2:end,1));
+west_east=table2array(data(1,2:end));
+depth=table2array(data(2:end,2:end));
+
+%海水深度
+figure;
+surf(repmat(south_north,1,201),repmat(west_east,251,1),depth);
+font_size=15;
+title("海水深度",FontSize=font_size+2);
+xlabel("从南到北/NM",FontSize=font_size);
+ylabel("从西到东/NM",FontSize=font_size);
+zlabel("海水深度/m",FontSize=font_size);
+shading interp;
+saveas(gcf,'land_depth.png');
+
+%海底形状
+figure;
+surf(repmat(south_north,1,201),repmat(west_east,251,1),-1*depth);
+title("海底形状",FontSize=font_size+2);
+xlabel("从南到北/NM",FontSize=font_size);
+ylabel("从西到东/NM",FontSize=font_size);
+zlabel("海拔高度/m",FontSize=font_size);
+shading interp;
+saveas(gcf,'land_shape.png');
+
+%二维等高地平线
+figure;
+
+contourf(repmat(south_north,1,201),repmat(west_east,251,1),-1*depth);
+title("海底等高地形图",FontSize=font_size+2);
+xlabel("从南到北/NM",FontSize=font_size);
+ylabel("从西到东/NM",FontSize=font_size);
+zlabel("海水深度/m",FontSize=font_size);
+colormap jet; % 设置颜色映射
+colorbar; % 添加颜色图例
+saveas(gcf,'land_same_height.png');
+```
+
+
+
+## CSV导入数据
+
+* 法一
+
+```matlab
+filename='attach1.csv';
+data=readtable(filename, 'VariableNamingRule', 'preserve');
+x=table2array(data(:,2));
+y=table2array(data(:,3));
+z=table2array(data(:,4));
+
+figure;
+font_size=15;
+scatter3(x, y, z, 20, z, 'filled'); % 36为点的大小，z用于指定颜色
+xlabel("x/m",FontSize=font_size);
+ylabel("y/m",FontSize=font_size);
+zlabel("z/m",FontSize=font_size);
+colorbar; % 添加颜色图例
+saveas(gcf,"fast.png");
+```
+
+* 法二
+
+```matlab
+filename='attach1.xls';
+data=readtable(filename, 'VariableNamingRule', 'preserve');
+
+wei=data.("任务gps 纬度");
+jing=data.("任务gps经度");
+```
+
+> 无须再使用table2array

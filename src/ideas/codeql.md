@@ -163,6 +163,12 @@ exists(float y | x.sqrt() = y)
 
 * [getEnclosingFunction (github.com)](https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/predicate.Stmt$Stmt$getEnclosingFunction.0.html)
 
+### Expr
+
+* [getEnclosingVariable (github.com)](https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/predicate.Expr$Expr$getEnclosingVariable.0.html)
+* [getValue (github.com)](https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/predicate.Expr$Expr$getValue.0.html)
+* [getEnclosingVariable (github.com)](https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/predicate.Expr$Expr$getEnclosingVariable.0.html)
+
 ## 查询
 
 * `conversion.ql`文件与项目在同一个文件夹时

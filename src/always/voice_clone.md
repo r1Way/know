@@ -9,12 +9,44 @@
 ### 流程
 
 1. 下载
+
 2. 人声伴奏分离
+
 3. 语音切割
+
+   将1~2 mins的语言分割成多个单句。
+
 4. 打标
+
+   让文字，标点与语音对应。
+
 5. 训练
+
 6. 微调
+
 7. 推理
+
+### 关键路径
+
+* 人声伴奏分离
+
+`H:\voice_clone\GPT-SoVITS-beta\GPT-SoVITS-beta0706\output\uvr5_opt`
+
+* 语音切割
+
+`H:\voice_clone\GPT-SoVITS-beta\GPT-SoVITS-beta0706\output\slicer_opt`
+
+* 打标
+
+`H:\voice_clone\GPT-SoVITS-beta\GPT-SoVITS-beta0706\output\asr_opt`
+
+* 训练后的模型
+
+`H:\voice_clone\GPT-SoVITS-beta\GPT-SoVITS-beta0706\SoVITS_weights`
+
+`H:\voice_clone\GPT-SoVITS-beta\GPT-SoVITS-beta0706\GPT_weights`
+
+> 上面仅做参考，记得替换盘符。
 
 ### 说明
 
