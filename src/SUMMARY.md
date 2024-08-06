@@ -61,6 +61,10 @@
     - [数据结构](learn/数据结构.md)
     - [电子学作业](learn/电子学作业.md)
     - [问题](learn/问题.md)
+
+* [工具 tools](./tools.md)
+  * [实时翻译工具](tools/now_translate.md)
+
 - [临时 temp](./temp.md)
     - [处理文件名](temp/dealFileName/temp.md)
     - [未用初始化列表时是否会构造成员对象](temp/未用初始化列表时是否会构造成员对象/temp.md)
