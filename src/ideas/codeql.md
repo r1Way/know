@@ -168,6 +168,11 @@ exists(float y | x.sqrt() = y)
 * [getEnclosingVariable (github.com)](https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/predicate.Expr$Expr$getEnclosingVariable.0.html)
 * [getValue (github.com)](https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/predicate.Expr$Expr$getValue.0.html)
 * [getEnclosingVariable (github.com)](https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/predicate.Expr$Expr$getEnclosingVariable.0.html)
+* [hasLValueToRValueConversion (github.com)](https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/predicate.Expr$Expr$hasLValueToRValueConversion.0.html)
+
+### Node
+
+* [Node (github.com)](https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/ir/dataflow/internal/DataFlowUtil.qll/type.DataFlowUtil$Node.html)
 
 ## 查询
 

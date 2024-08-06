@@ -351,7 +351,7 @@ saveas(gcf,'land_same_height.png');
 
 
 
-## CSV导入数据
+## CSV导入数据，等高散点图
 
 * 法一
 
@@ -383,3 +383,18 @@ jing=data.("任务gps经度");
 ```
 
 > 无须再使用table2array
+
+## surf 光滑
+
+```matlab
+clc;
+clear;
+filename='attach1.xlsx';
+data=readtable(filename, 'VariableNamingRule', 'preserve');
+data=table2array(data);
+size=256;
+
+surf(repmat(1:size,size,1)',repmat(1:size,size,1),data);
+shading interp; % 启用插值着色
+```
+
