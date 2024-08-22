@@ -370,6 +370,72 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
   回到上一目录（project)，`git add .`才能将我所有的文件提交完。
 
+### 打开`git log --oneline`后，无法退出
+
+* 按q
+
+### git pull后因为conflict跟本地分支merge了
+
+* vi 修改冲突后，add commit，后main|MERGING就消失了
+
+* ```shell
+  刘星池@river-away MINGW64 /g/know/src (main)
+  $ git pull
+  Auto-merging src/SUMMARY.md
+  CONFLICT (content): Merge conflict in src/SUMMARY.md
+  Automatic merge failed; fix conflicts and then commit the result.
+  
+  刘星池@river-away MINGW64 /g/know/src (main|MERGING)
+  $ vi SUMMARY.md
+  
+  刘星池@river-away MINGW64 /g/know/src (main|MERGING)
+  $ git add .
+  
+  刘星池@river-away MINGW64 /g/know/src (main|MERGING)
+  $ git commit -m"deal merge"
+  [main 66f29ba] deal merge
+  
+  刘星池@river-away MINGW64 /g/know/src (main)
+  $ git push
+  
+  ```
+
+###  ! [rejected]        main -> main (non-fast-forward)
+
+* 问题
+
+```shell
+To github.com:r1Way/work_manage.git
+ ! [rejected]        main -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:r1Way/work_manage.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+```shell
+$ git pull origin main
+From github.com:r1Way/work_manage
+ * branch            main       -> FETCH_HEAD
+fatal: refusing to merge unrelated histories
+```
+
+* 解决
+
+你遇到的错误信息“fatal: refusing to merge unrelated histories”通常是因为本地和远程的 `main` 分支并没有共同的历史记录。这种情况通常在以下几种情况下发生：
+
+1. 你在本地仓库里创建了一个新的 Git 仓库，而远程仓库是一个全新的仓库，没有相同的提交历史。
+2. 远程仓库被重置过（例如，进行过 `git reset --hard`），导致其历史与本地的不同。
+
+合并远程分支：使用以下命令来拉取远程分支并合并：
+
+```
+git pull origin main --allow-unrelated-histories  
+```
+
+
+
 ## Vim
 
 * 按到ctrl+c退出时
@@ -378,35 +444,3 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
 * set number! 显示行号
 * split水平线分割，vsplit竖直线分割
-
-## Trouble Shooting
-
-* 打开`git log --oneline`后，无法退出
-
-  * 按q
-
-* git pull后因为conflict跟本地分支merge了
-
-  * vi 修改冲突后，add commit，后main|MERGING就消失了
-
-  * ```shell
-    刘星池@river-away MINGW64 /g/know/src (main)
-    $ git pull
-    Auto-merging src/SUMMARY.md
-    CONFLICT (content): Merge conflict in src/SUMMARY.md
-    Automatic merge failed; fix conflicts and then commit the result.
-    
-    刘星池@river-away MINGW64 /g/know/src (main|MERGING)
-    $ vi SUMMARY.md
-    
-    刘星池@river-away MINGW64 /g/know/src (main|MERGING)
-    $ git add .
-    
-    刘星池@river-away MINGW64 /g/know/src (main|MERGING)
-    $ git commit -m"deal merge"
-    [main 66f29ba] deal merge
-    
-    刘星池@river-away MINGW64 /g/know/src (main)
-    $ git push
-    
-    ```
