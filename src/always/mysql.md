@@ -4,6 +4,12 @@
 
 ## 数据库
 
+### 清屏
+
+```mysql
+system cls
+```
+
 ### 登录数据库
 
 ```shell
@@ -38,6 +44,18 @@ show databases;
 use <database name>;
 ```
 
+### 查看数据库默认编码
+
+```mysql
+SHOW CREATE DATABASE your_database_name;
+```
+
+### 设置数据库编码
+
+```mysql
+CREATE DATABASE dbname DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+```
+
 ## 数据表
 
 * 都要有`ALTER TABLE <table name>`
@@ -59,6 +77,30 @@ desc student;
 ```mysql
 create table student(id int,name char(10),age int,sex char(5));
 ```
+
+### 重命名数据表名
+
+```mysql
+ALTER TABLE user10 RENAME TO user11;
+```
+
+### 查询数据表编码
+
+```mysql
+SHOW CREATE TABLE your_table_name;
+```
+
+### 设置数据表编码
+
+```mysql
+CREATE TABLE `students` (
+    `id` CHAR(30) NOT NULL,
+    `name` CHAR(30) NOT NULL,
+    `major` CHAR(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+> 注意是反引号`而不是单引号‘
 
 ### 修改数据表的名字
 
@@ -87,7 +129,7 @@ ADD COLUMN major VARCHAR(100) NOT NULL;
 ### 删除表
 
 ```mysql
-ALTER TABLE students DROP TABLE student;
+DROP TABLE students;
 ```
 
 ## 数据项
@@ -104,23 +146,45 @@ insert into student(name,id,major) value ("张三","001","计算机");
 insert into student value ("张三","001","计算机");
 ```
 
-
-
 ### 删除数据项
 
 ```mysql
 delete from students where name="张三";
 ```
 
-### 修改
+### 修改数据项
 
 ```mysql
- update students set age=12;
+UPDATE students
+SET student_id = 新的学号
+WHERE id = 2;
 ```
 
 ### 展示所有数据
 
 ```mysql
 select * from students;
+```
+
+## 联合查询
+
+### join
+
+```mysql
+mysql> SELECT class.class_id,class.name,class.description
+-> from class
+-> JOIN class_teacher ON class.class_id=class_teacher.class_id
+-> WHERE class_teacher.teacher_id=113210;
+```
+
+效果
+
+```shell
++----------+-------+-------------+
+| class_id | name | description |
++----------+-------+-------------+
+| 10293 | 英语I | 星期二1~2节 |
++----------+-------+-------------+
+1 row in set (0.00 sec)
 ```
 
