@@ -148,8 +148,16 @@ insert into student value ("张三","001","计算机");
 
 ### 删除数据项
 
+删除若干项
+
 ```mysql
 delete from students where name="张三";
+```
+
+删除所有
+
+```mysql
+delete from student
 ```
 
 ### 修改数据项
@@ -159,6 +167,8 @@ UPDATE students
 SET student_id = 新的学号
 WHERE id = 2;
 ```
+
+
 
 ### 展示所有数据
 
@@ -177,6 +187,8 @@ mysql> SELECT class.class_id,class.name,class.description
 -> WHERE class_teacher.teacher_id=113210;
 ```
 
+> != 不等于
+
 效果
 
 ```shell
@@ -186,5 +198,13 @@ mysql> SELECT class.class_id,class.name,class.description
 | 10293 | 英语I | 星期二1~2节 |
 +----------+-------+-------------+
 1 row in set (0.00 sec)
+```
+
+### 修改多个字段
+
+```mysql
+UPDATE students
+SET major = 'Computer Science', age = 22
+WHERE id = 1;
 ```
 
