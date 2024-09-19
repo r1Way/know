@@ -2,7 +2,9 @@
 
 题目：C++作业管理系统
 
- 
+项目地址
+
+ [r1Way/work_manage: C++ homework manage system (github.com)](https://github.com/r1Way/work_manage)
 
 ## [系统要求]
 
