@@ -56,6 +56,7 @@
     - [自己写一个串口助手](ideas/uart_assist.md)
     - [代码关联助手](ideas/code_relate_help.md)
     - [作业管理系统](ideas/work_manage_system.md)
+    - [图书排列检错机器人](ideas/book_robot.md)
 - [系统知识 learn](./learn.md)
     - [51单片机学习](learn/51单片机学习.md)
     - [MarkDown教程](learn/MarkDown教程.md)
