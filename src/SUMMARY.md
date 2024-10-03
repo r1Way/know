@@ -15,6 +15,7 @@
   - [Adams](always/adams.md)
   - [Codeql](always/codeql.md)
   - [.clang-format](clang_format.md)
+  - [verilog](always/verilog.md)
 - [想法 ideas](./ideas.md)
     - [codeql使用](ideas/codeql.md)
     - [数字识别](ideas/number_recognition.md)
