@@ -1,6 +1,12 @@
 # Verilog
 
-板子型号xc7s50csga324-1
+板子 boolean board
+
+芯片型号xc7s50csga324-1
+
+板子 达芬奇xc7a35tfgg484-2
+
+芯片型号
 
 ## 流程
 
@@ -38,6 +44,74 @@
 
 * 滑动槽可改变观看区域
 
+### wire型变量不能初始化
+
+reg才行
+
+### initial与always执行顺序关系
+
+仿真开始时，所有`initial`块按照它们在代码中出现的顺序执行一次。这意味着在任何`always`块执行之前，所有的`initial`块已经执行完毕。
+
+### 计数器加满后，会置零重新加
+
+### 模块内有reg
+
+可在模块设计时初始化
+
+```verilog
+`timescale 1ns / 1ps
+module Lab_5_1(
+input wire clk,
+output reg q=0,
+output reg front=0,
+output reg behind=0
+    );
+    ······
+endmodule
+```
+
+### 仿真时不要将wire赋值
+
+```verilog
+module tb(
+    );
+    
+reg clk=0;
+wire q;
+wire front;
+wire behind;
+
+initial begin
+clk=0;
+end
+
+always #10 clk=~clk;
+
+Lab_5_1 test(
+.clk(clk),
+.q(q),
+.front(front),
+.behind(behind)
+);
+
+endmodule
+
+```
+
+### 仿真的内容
+
+只要是在testbanch中定义的东西，都会在仿真中出现
+
+### .veo文件查看ip核使用方法
+
+### initial模块一般只在仿真中使用
+
+> https://reborn.blog.csdn.net/article/details/107307958?fromshare=blogdetail&sharetype=blogdetail&sharerId=107307958&sharerefer=PC&sharesource=r1Way&sharefrom=from_link
+
+### 查看内部器件的仿真信号
+
+> https://jianght.blog.csdn.net/article/details/105813222?fromshare=blogdetail&sharetype=blogdetail&sharerId=105813222&sharerefer=PC&sharesource=r1Way&sharefrom=from_link
+
 ## 硬件图
 
 ### 开关
@@ -65,6 +139,12 @@ always@(*)begin
 end
 ```
 
+```verilog
+always #10 clk = ~clk;// 语句意味着在某些条件下会反复执行块内的代码。在这里，#10 是一种延迟控制，表示在每次执行该语句后等待 10 时间单位（可以是纳秒、皮秒等，取决于模拟的时间单位），然后再执行块内的代码。
+```
+
+
+
 ### initial
 
 ```verilog
@@ -91,6 +171,34 @@ case(in)
     3'b111: y=8'b10000000;
 endcase
 ```
+
+### reg
+
+```verilog
+reg a[0:3];   // 声明一个数组，包含4个元素  
+initial begin  
+    a[0] = 7; // 只给第一个元素赋值为 7，其他元素为 0  
+end  
+```
+
+```verilog
+reg [3:0] a; // 声明一个4位的reg变量  
+initial begin  
+    a = 7; // 将a赋值为7  
+end  
+```
+
+### wire
+
+```verilog
+wire [7:0] c;// 用于表示一个 8 位宽的单一信号，适合处理一个完整数据字。
+```
+
+```verilog
+wire c[7:0];//用于表示一个有 8 个元素的数组，每个元素是一个单比特的 wire，适合处理多个分散的信号。
+```
+
+
 
 ### 仿真
 
@@ -288,3 +396,181 @@ set_property -dict {PACKAGE_PIN E3 IOSTANDARD LVCMOS33} [get_ports {y[6]}]
 set_property -dict {PACKAGE_PIN E5 IOSTANDARD LVCMOS33} [get_ports {y[7]}]
 ```
 
+### lab3 rgb  pwm
+
+* design
+
+```
+module Lab_3_2(
+output r, output g, output b, input en, input clk_100MHz
+);
+reg [31:0]freq=1000000;//1MHz
+reg [6:0]duty_r=50;
+reg [6:0]duty_g=50;
+reg [6:0]duty_b=50;
+reg rst=1;
+reg [31:0]cnt=0;
+reg [7:0]cnt2=1;
+//简单的分频代码，也可以使用分频的 IP 进行分频
+always@(posedge clk_100MHz) begin
+if(cnt<10000000) begin //变化频率 0.1s
+cnt=cnt+1;
+end
+else begin
+cnt=0;
+if(cnt2<=150) begin
+cnt2=cnt2+1;
+end
+else begin
+cnt2=1;
+end
+end
+if(cnt2>0 && cnt2<=50) begin
+duty_r<=cnt2;
+duty_g<=0;
+duty_b<=0;
+end
+else if(cnt2>50 && cnt2<=100) begin
+duty_g<=cnt2-50;
+duty_r<=0;
+duty_b<=0;
+end
+else begin
+duty_b<=cnt2-100;
+duty_g<=0;
+duty_r<=0;
+end
+end
+Driver_PWM_0 pwm_r (
+.clk_100MHz(clk_100MHz), // input wire clk_100MHz
+.Freq(freq), // input wire [31 : 0] Freq
+.Duty(duty_r), // input wire [6 : 0] Duty
+.Rst(rst), // input wire Rst
+.En(en), // input wire En
+.PWM(r) // output wire PWM
+);
+Driver_PWM_0 pwm_g (
+.clk_100MHz(clk_100MHz), // input wire clk_100MHz
+.Freq(freq), // input wire [31 : 0] Freq
+.Duty(duty_g), // input wire [6 : 0] Duty
+.Rst(rst), // input wire Rst
+.En(en), // input wire En
+.PWM(g) // output wire PWM
+);
+Driver_PWM_0 pwm_b (
+.clk_100MHz(clk_100MHz), // input wire clk_100MHz
+.Freq(freq), // input wire [31 : 0] Freq
+.Duty(duty_b), // input wire [6 : 0] Duty
+.Rst(rst), // input wire Rst
+.En(en), // input wire En
+.PWM(b) // output wire PWM
+);
+```
+
+* constrain
+
+```verilog
+create_clock -period 10.000 -name gclk [get_ports clk_100MHz]
+set_property -dict {PACKAGE_PIN F14 IOSTANDARD LVCMOS33} [get_ports {clk_100MHz}]
+set_property -dict {PACKAGE_PIN V2 IOSTANDARD LVCMOS33} [get_ports {en}]; #sw0
+set_property -dict {PACKAGE_PIN V6 IOSTANDARD LVCMOS33} [get_ports {r}]; # RBG0_R
+set_property -dict {PACKAGE_PIN V4 IOSTANDARD LVCMOS33} [get_ports {g}]; #RBG0_G
+set_property -dict {PACKAGE_PIN U6 IOSTANDARD LVCMOS33} [get_ports {b}]; #RBG0_B
+```
+
+### lab5 分频器
+
+三分频
+
+* design
+
+```verilog
+`timescale 1ns / 1ps
+
+module Lab_5_1(
+input wire clk,
+output reg q=0,
+output reg front=0,
+output reg behind=0
+    );
+
+reg [1:0]count=0;
+
+   
+always@(posedge clk) begin
+    if(count!=2) begin
+    count=count+1;
+    end
+    else begin
+    count=0;
+    end
+end
+
+always@(posedge clk) begin
+    if(count==0) begin
+    front<=1;
+    end
+    else begin
+    front<=0;
+    end
+end
+
+always@(negedge clk) begin
+    if(count==0) begin
+    behind<=1;
+    end
+    else begin
+    behind<=0;
+    end
+end
+
+always@(posedge front)begin
+    q=1;
+end
+
+always@(negedge behind)begin
+    q=0;
+end
+endmodule
+```
+
+* simulation
+
+```verilog
+`timescale 1ns / 1ps
+
+module tb(
+    );
+    
+reg clk=0;
+wire q;
+wire front;
+wire behind;
+
+initial begin
+clk=0;
+end
+
+always #10 clk=~clk;
+
+Lab_5_1 test(
+.clk(clk),
+.q(q),
+.front(front),
+.behind(behind)
+);
+
+endmodule
+```
+
+### 比较两数大小
+
+> [verilog比较两个数大小 - CSDN文库](https://wenku.csdn.net/answer/2fcd241fed3c4deea194904de5ea4570#:~:text=可以使用 Veril)
+
+### 车牌识别
+
+> [jjejdhhd/License-Plate-Recognition-FPGA: 基于FPGA进行车牌识别 (github.com)](https://github.com/jjejdhhd/License-Plate-Recognition-FPGA)
+
+### UART
+
+> [新新新手Icer练习（八）：uart的基本组成及其verilog实现](https://www.bilibili.com/video/BV1he411F7UF?vd_source=ec4e4974e1b56ed330afdb6c6ead1501)

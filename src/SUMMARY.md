@@ -17,6 +17,9 @@
   - [.clang-format](clang_format.md)
   - [verilog](always/verilog.md)
 - [想法 ideas](./ideas.md)
+    - [UART做逻辑分析仪](ideas/uart_logic_analysis.md)
+    - [智能小车底座控制](ideas/car_motor_control.md)
+    - [42步进电机控制](ideas/42_motor.md)
     - [codeql使用](ideas/codeql.md)
     - [数字识别](ideas/number_recognition.md)
     - [web前端](ideas/web前端.md)
@@ -59,6 +62,7 @@
     - [代码关联助手](ideas/code_relate_help.md)
     - [作业管理系统](ideas/work_manage_system.md)
     - [图书排列检错机器人](ideas/book_robot.md)
+    
 - [系统知识 learn](./learn.md)
     - [51单片机学习](learn/51单片机学习.md)
     - [MarkDown教程](learn/MarkDown教程.md)
