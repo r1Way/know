@@ -164,6 +164,8 @@ endmodule
 
 ### tb
 
+simulation runtime 需设置为200000ns
+
 ```verilog
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
@@ -354,7 +356,7 @@ end
 //根据tx_cnt来给uart发送端口赋值
 always @(posedge clk or negedge rst_n) begin
     if(!rst_n) 
-        uart_txd <= 1'b1;
+        uart_txd <= 1'b1;//重置时为高电平
     else if(uart_tx_busy) begin
         case(tx_cnt) 
             4'd0 : uart_txd <= 1'b0        ; //起始位
@@ -377,3 +379,158 @@ end
 endmodule
 ```
 
+### tb
+
+simulation runtime 需设置为200000ns
+
+```verilog
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/10/25 22:50:18
+// Design Name: 
+// Module Name: tb
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module tb(
+
+);
+
+uart_tx uart_tx0(
+    .clk(clk)         , //绯荤粺鏃堕挓
+    .rst_n(rst_n)       , //绯荤粺澶嶄綅锛屼綆鏈夋晥
+    .uart_tx_en(uart_tx_en)  , //UART鐨勫彂閫佷娇鑳�
+    .uart_tx_data(uart_tx_data), //UART瑕佸彂閫佺殑鏁版嵁
+    .uart_txd(uart_txd)   , //UART鍙戦�佺鍙�
+    .uart_tx_busy(uart_tx_busy) //鍙戦�佸繖鐘舵�佷俊鍙�
+);
+
+reg clk=0;
+reg rst_n=1;
+reg uart_tx_en=0;
+reg [7:0] uart_tx_data=8'b0;
+wire uart_txd;
+wire uart_tx_busy;
+
+always #10 clk=~clk; 
+
+
+initial begin
+clk=0;
+rst_n=1;
+uart_tx_en=0;
+uart_tx_data<=8'b01101101;
+#20
+uart_tx_en=1;
+#20
+uart_tx_en=0;
+end
+
+
+endmodule
+```
+
+### 结果
+
+![94e77cbc9208c64c793f8973d5be21ba](../image/94e77cbc9208c64c793f8973d5be21ba.png)
+
+![adadda1c1211917d078eb9e82db878e6](../image/adadda1c1211917d078eb9e82db878e6.png)
+
+## 顶层文件
+
+```verilog
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/10/26 09:27:43
+// Design Name: 
+// Module Name: uart
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module uart(
+input sys_clk,
+input sys_rst_n,
+input uart_rxd,
+output uart_txd
+    );
+uart_rx_0 my_rx(
+  .clk(sys_clk),                    // input wire clk
+  .rst_n(sys_rst_n),                // input wire rst_n
+  .uart_rxd(uart_rxd),          // input wire uart_rxd
+  .uart_rx_done(uart_rx_done),  // output wire uart_rx_done
+  .uart_rx_data(uart_rx_data)  // output wire [7 : 0] uart_rx_data
+);
+
+wire uart_rx_done;
+wire [7:0] uart_rx_data;
+
+uart_tx_0 my_tx(
+  .clk(sys_clk),                    // input wire clk
+  .rst_n(sys_rst_n),                // input wire rst_n
+  .uart_tx_en(uart_rx_done),      // input wire uart_tx_en
+  .uart_tx_data(uart_rx_data),  // input wire [7 : 0] uart_tx_data
+  .uart_txd(uart_txd)          // output wire uart_txd
+);
+
+
+endmodule
+
+```
+
+### 约束文件
+
+基于达芬奇xc7a35tfgg484-2
+
+```xdc
+#时序约束
+create_clock -period 20.000 -name sys_clk [get_ports sys_clk]
+
+#IO引脚约束
+#------------------------------系统时钟和复位-----------------------------------
+set_property -dict {PACKAGE_PIN R4 IOSTANDARD LVCMOS33} [get_ports sys_clk]
+set_property -dict {PACKAGE_PIN U2 IOSTANDARD LVCMOS33} [get_ports sys_rst_n]
+
+#-----------------------------------UART----------------------------------------
+set_property -dict {PACKAGE_PIN U5 IOSTANDARD LVCMOS33} [get_ports uart_rxd]
+set_property -dict {PACKAGE_PIN T6 IOSTANDARD LVCMOS33} [get_ports uart_txd]
+```
+
+## 串口调试助手
+
+二选一
+
+* [Neutree/COMTool: Cross platform communicate assistant（更全能）](https://github.com/Neutree/COMTool)
+
+![d8d8df34e9f1b7308dff8bce493c538a](../image/d8d8df34e9f1b7308dff8bce493c538a.png)
+
+* [Oslomayor/PyQt5-SerialPort-Stable（使用更简单，默认数据位为8位）](https://github.com/Oslomayor/PyQt5-SerialPort-Stable)
+
+![a70abfe9aa2d2e7d87c91c66fcd61878](../image/a70abfe9aa2d2e7d87c91c66fcd61878.png)

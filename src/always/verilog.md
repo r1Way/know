@@ -112,6 +112,10 @@ endmodule
 
 > https://jianght.blog.csdn.net/article/details/105813222?fromshare=blogdetail&sharetype=blogdetail&sharerId=105813222&sharerefer=PC&sharesource=r1Way&sharefrom=from_link
 
+### 仿真时需要在initial中对clk初始化
+
+
+
 ## 硬件图
 
 ### 开关

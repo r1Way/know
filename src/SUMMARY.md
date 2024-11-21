@@ -16,7 +16,10 @@
   - [Codeql](always/codeql.md)
   - [.clang-format](clang_format.md)
   - [verilog](always/verilog.md)
+  - [剪辑](always/pr.md)
 - [想法 ideas](./ideas.md)
+    - [pytorch](pytorch.md)
+    - [LCD显示屏](ideas/lcd_screen.md)
     - [UART做逻辑分析仪](ideas/uart_logic_analysis.md)
     - [智能小车底座控制](ideas/car_motor_control.md)
     - [42步进电机控制](ideas/42_motor.md)
@@ -79,8 +82,11 @@
 
 * [工具 tools](./tools.md)
   * [实时翻译工具](tools/now_translate.md)
+  * [xlsx多sheet更好的筛查工具](tools/search_sheet.md)
 
-- [临时 temp](./temp.md)
+- 临时 temp
     - [处理文件名](temp/dealFileName/temp.md)
     - [未用初始化列表时是否会构造成员对象](temp/未用初始化列表时是否会构造成员对象/temp.md)
     - [三层继承 成员变量生成顺序](temp/inherit/temp1.md)
+- [修理 debug](./debug.md)
+    - [副屏一线通出问题](debug/screen_line.md)
