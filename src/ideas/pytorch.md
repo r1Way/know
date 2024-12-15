@@ -38,7 +38,7 @@ conda env list
 
 ### 查看torch版本
 
-```shell
+```python
 import torch
 print(torch.__version__)
 print(torch.version.cuda)
@@ -305,16 +305,550 @@ writer.close()
 
 ### 打开log
 
+终端中输入以下指令。复制链接至浏览器，终端中退出按ctrl+c
+
 ```shell
 tensorboard --logdir=logs
 ```
 
-* 端口选项
+端口选项
 
 ```shell
 tensorboard --logdir=logs --port=6007
 ```
 
+## 常用Transforms
+
+是一个用于处理图像的库
+
+* 样例
+
+``` python
+from PIL import Image
+from torchvision import transforms
+
+# alt+7 打开structure
+# ctrl+p方便查看函数参数
+# ctrl+alt+l格式化代码
+
+# tensor
+img_path = "train/ants/0013035.jpg"
+img_path_abs = "G:\\project\\pytorch_train\\dataset\\train\\ants\\0013035.jpg"
+img = Image.open(img_path)
+print(img)  # 打印图片信息
+
+# transforms如何使用
+# transforms是一个工具箱
+
+tensor_trans = transforms.ToTensor()
+tensor_img = tensor_trans(img)  # 将图片转为tensor
+print(tensor_img)
+```
+
+| 输入 | PIL     | Image.open() |
+| ---- | ------- | ------------ |
+| 输出 | tensor  | ToTensor()   |
+| 作用 | narrays | cv.imread()  |
+
+* Totensor
+
+  将图片转成tensor格式
+
+```python
+from PIL import Image
+from torchvision import transforms
+from torch.utils.tensorboard import SummaryWriter
+
+writer = SummaryWriter("logs")
+img = Image.open("train/ants/0013035.jpg")
+print(img)
+
+# ToTensor
+trans_totensor = transforms.ToTensor()  ##工具
+img_tensor = trans_totensor(img)
+writer.add_image("ToTensor", img_tensor)
+write.close()
+```
+
+* Normalize
+
+  标准化，可以参考正太分布变为标准正太分布的过。
+
+  writer.add_iamge()的第三个参数用于将该图片放置在第几step
+
+```python
+from PIL import Image
+from torchvision import transforms
+from torch.utils.tensorboard import SummaryWriter
+
+writer = SummaryWriter("logs")
+img = Image.open("train/ants/0013035.jpg")
+print(img)
+
+trans_totensor = transforms.ToTensor()  ##工具
+img_tensor = trans_totensor(img)
+
+#Normalize
+print(img_tensor[0][0][0])
+trans_norm=transforms.Normalize([0.5,0.5,0.5],[0.5,0.5,0.5])# 三通道 均值与标准差
+img_norm=trans_norm(img_tensor)
+print(img_norm[0][0][0])
+writer.add_image("Normalize",img_norm)
+writer.close()
+```
+
+* RandomCrop
+
+  ```python
+  from PIL import Image
+  from torchvision import transforms
+  from torch.utils.tensorboard import SummaryWriter
+  
+  writer = SummaryWriter("logs")
+  img = Image.open("train/ants/0013035.jpg")
+  print(img)
+  
+  # RandomCrop
+  trans_random=transforms.RandomCrop(50,100);
+  trans_compose_2=transforms.Compose([trans_random,trans_totensor]) #compose为将多种transforms组合在一起
+  for i in range(10):
+      img_crop=trans_compose_2(img)
+      writer.add_image("RandomCrop",img_crop,i)
+  
+  writer.close()
+  ```
+
+## 数据集的下载及使用
+
+> [PyTorch Domains | PyTorch](https://pytorch.org/pytorch-domains)
+
+```python
+import torchvision
+from torch.utils.tensorboard import SummaryWriter
+
+dataset_transform = torchvision.transforms.Compose([
+    torchvision.transforms.ToTensor()
+])
+train_set = torchvision.datasets.CIFAR10(root="./dataset", train=True, transform=dataset_transform,
+                                         download=True)  # 作为训练集,下载数据集,并自动解压
+test_set = torchvision.datasets.CIFAR10(root="./dataset", train=False, transform=dataset_transform,
+                                        download=True)  # 作为测试集
+
+# print(test_set[0])
+# image,target=test_set[0]
+# print(image)
+# print(target)
+# image.show()
+
+print(test_set[0])
+writer=SummaryWriter("p11")
+for i in range(10):
+    img,target=test_set[i]
+    writer.add_image("test_set",img,i)
+
+writer.close()
+```
+
+## DataLoader
+
+> [torch.utils.data — PyTorch 2.5 documentation](https://pytorch.org/docs/stable/data.html)
+
+* 样例
+
+```python
+import torchvision.datasets
+from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
+
+test_data = torchvision.datasets.CIFAR10("./dataset", False, transform=torchvision.transforms.ToTensor())
+
+test_loader = DataLoader(dataset=test_data, batch_size=64, shuffle=True, num_workers=0, drop_last=False)
+# shuffle 一轮后是否重新洗牌
+# num_workers 启用子线程数量
+# drop_last 余数数据是否保留
+img,target=test_data[0]
+print(img.shape)
+print(target)
+
+writer =SummaryWriter("dataloader")
+for epoch in range(2):
+    step = 0
+    for data in test_loader:
+        imgs,targets=data
+        # print(imgs.shape)#torch.Size([4, 3, 32, 32]) 4表示batch_size
+        # print(targets)# tensor([8, 7, 8, 3])
+        writer.add_images("Epoch:{}".format(epoch),imgs,step)
+        step=step+1
+
+writer.close()
+```
+
+* 效果
+
+  ![864bf3f2f5f8c399b79f029aa3bf9fcc](../image/864bf3f2f5f8c399b79f029aa3bf9fcc.png)
+
+## nn.Module
+
+> [Module — PyTorch 2.5 documentation](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module)
+
+### 基础样例
+
+```python
+import torch
+from torch import nn
+
+
+class Tudui(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+    def forward(self,input):
+        output=input+1
+        return output
+
+tudui=Tudui()
+x=torch.tensor(1.0)
+output=tudui(x)
+print(output)
+```
+
+### 卷积层
+
+卷积核
+
+> [convolution-layers](https://pytorch.org/docs/stable/nn.html#convolution-layers)
+
+```python
+import torch
+import torchvision
+from torch import nn
+from torch.nn import Conv2d
+from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
+
+dataset = torchvision.datasets.CIFAR10("./dataset", train=False, transform=torchvision.transforms.ToTensor(),
+                                       download=True)
+
+dataloader = DataLoader(dataset, batch_size=64)
+
+
+class Tudui(nn.Module):
+    def __init__(self):
+        super(Tudui, self).__init__()
+        self.conv1 = Conv2d(in_channels=3, out_channels=6, kernel_size=3, stride=1, padding=0)
+        # stride为步进
+        # padding为四周的填充
+
+    def forward(self, x):
+        x = self.conv1(x)
+        return x
+
+
+tudui = Tudui()
+print(tudui)
+
+writer = SummaryWriter("./logs")
+step = 0
+for data in dataloader:
+    imgs, targets = data
+    output = tudui(imgs)
+    print(imgs.shape)
+    print(output.shape)
+    writer.add_images("input", imgs, step)
+    # 将output从6变为3个通道
+    output = torch.reshape(output, (-1, 3, 30, 30))
+    writer.add_images("output", output, step)
+    step = step + 1
+
+writer.close()
+```
+
+### 最大池化层
+
+池化层没有学习参数
+
+> [pooling-layers](https://pytorch.org/docs/stable/nn.html#pooling-layers)
+
+```python
+import torch
+from torch import nn
+from torch.nn import MaxPool2d
+
+input =torch.tensor([[1,2,0,3,1],
+                     [0,1,2,3,1],
+                     [1,2,1,0,0],
+                     [5,2,3,1,1],
+                     [2,1,0,1,1]],dtype=torch.float)#默认为long，现在设置为浮点
+# print(input.shape) torch.Size([5, 5])
+input=torch.reshape(input,(-1,1,5,5))
+# print(input.shape) torch.Size([1,1,5, 5])
+
+class Tudui(nn.Module):
+    def __init__(self):
+        super(Tudui,self).__init__()
+        self.maxpool1=MaxPool2d(kernel_size=3,ceil_mode=True)#ceil 向上取整
+
+    def forward(self,input):
+        output=self.maxpool1(input)
+        return output
+
+tudui=Tudui()
+output=tudui(input)
+print(output)
+```
+
+### 非线性激活
+
+```python
+import torch
+import torchvision.datasets
+from torch import nn
+from torch.nn import ReLU
+from torch.nn import Sigmoid
+from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
+
+#使用数据集测试
+dataset = torchvision.datasets.CIFAR10("./dataset", train=True, transform=torchvision.transforms.ToTensor(),
+                                       download=True)
+
+dataloader = DataLoader(dataset, batch_size=64)
+
+#使用自定义数据测试
+input =torch.tensor([[1,-0.5],
+                     [-1,3]])
+output=torch.reshape(input,[-1,1,2,2])
+
+class Tudui(nn.Module):
+    def __init__(self):
+        super(Tudui,self).__init__()
+        self.relu1=ReLU(inplace=False)#false传形参，True传实参,默认为
+        self.sigmoid=Sigmoid()
+    def forward(self,input):
+        output=self.sigmoid(input)#ReLU效果不明显，用sigmoid代替
+        return output
+
+
+tudui=Tudui()
+#
+# output=tudui(input)
+# print(output)
+
+writer=SummaryWriter("log__sigmoid")
+step=0
+for data in dataloader:
+    imgs,targets=data
+    writer.add_images("input",imgs,step)
+    output=tudui(imgs)
+    writer.add_images("output",output,step)
+    step=step+1
+writer.close()
+```
+
+## Sequential
+
+将若干层组合在一起
+
+```python
+import torch
+from torch import nn
+from torch.nn import Conv2d, MaxPool2d, Flatten, Linear, Sequential
+from torch.utils.tensorboard import SummaryWriter
+
+
+class Tudui(nn.Module):
+    def __init__(self):
+        super(Tudui, self).__init__()
+        self.module1 = Sequential(
+            Conv2d(3, 32, 5, padding=2),
+            MaxPool2d(2),
+            Conv2d(32, 32, 5, padding=2),
+            MaxPool2d(2),
+            Conv2d(32, 64, 5, padding=2),
+            MaxPool2d(2),
+            Flatten(),
+            Linear(1024,64),
+            Linear(64,10)
+        )
+
+    def forward(self,x):
+        x=self.module1(x)
+        return x
+
+tudui=Tudui()
+print(tudui)
+input=torch.ones((64,3,32,32))
+output=tudui(input)
+print(output.shape)
+writer=SummaryWriter("logs_seq")
+writer.add_graph(tudui,input)
+writer.close()
+```
+
+* 用tensorboard可以查看各层
+
+  ```python
+  writer=SummaryWriter("logs_seq")
+  writer.add_graph(tudui,input)
+  writer.close()
+  ```
+
+![650a49b4cac47aec649411d93115d1eb](../image/650a49b4cac47aec649411d93115d1eb.png)
+
+## 损失函数
+
+> [L1Loss — PyTorch 2.5 documentation](https://pytorch.org/docs/stable/generated/torch.nn.L1Loss.html#torch.nn.L1Loss)
+
+```python
+import torch
+from torch import nn
+from torch.nn import L1Loss,MSELoss,CrossEntropyLoss
+
+inputs = torch.tensor([1, 2, 3],dtype=float)
+targets = torch.tensor([1, 2, 5],dtype=float)
+
+inputs = torch.reshape(inputs, (1, 1, 1, 3))
+outputs = torch.reshape(targets, (1, 1, 1, 3))
+
+##
+loss =L1Loss()
+result=loss(inputs,outputs)
+print(result)
+
+##方差
+loss_mse=MSELoss()
+result_mse=loss_mse(inputs,outputs)
+print(result_mse)
+
+##交叉熵（分类时使用）
+x=torch.tensor([0.1,0.2,0.3])
+y=torch.tensor([1])
+x=torch.reshape(x,(1,3))
+loss_cross=nn.CrossEntropyLoss()
+result_cross=loss_cross(x,y)
+print(result_cross)
+```
+
+## 反向传播
+
+反向计算各权重的梯度（此时还未调整参数）
+
+在创建的网络模型->model1->受保护的特性->_modules->某层（如卷积层）->weight，可以查看权重
+
+```python
+import torchvision
+from torch import nn
+from torch.nn import Sequential,Conv2d,MaxPool2d,Flatten,Linear
+from torch.utils.data import DataLoader
+
+dataset=torchvision.datasets.CIFAR10("dataset",train=False,transform=torchvision.transforms.ToTensor(),
+                                     download=True)
+dataloader=DataLoader(dataset,batch_size=1)
+
+class Tudui(nn.Module):
+    def __init__(self):
+        super(Tudui, self).__init__()
+        self.module1 = Sequential(
+            Conv2d(3, 32, 5, padding=2),
+            MaxPool2d(2),
+            Conv2d(32, 32, 5, padding=2),
+            MaxPool2d(2),
+            Conv2d(32, 64, 5, padding=2),
+            MaxPool2d(2),
+            Flatten(),
+            Linear(1024,64),
+            Linear(64,10)
+        )
+
+    def forward(self,x):
+        x=self.module1(x)
+        return x
+
+tudui=Tudui()
+loss=nn.CrossEntropyLoss()
+for data in dataloader:
+    imgs,targets=data
+    outputs=tudui(imgs)
+    result_loss=loss(outputs,targets)
+    result_loss.backward()
+    print(result_loss)
+    break;##只是看看weight
+```
+
+## 优化器
+
+用于更新模型里的权重
+
+```python
+import torch.optim
+import torchvision
+from torch import nn
+from torch.nn import Sequential,Conv2d,MaxPool2d,Flatten,Linear
+from torch.utils.data import DataLoader
+
+dataset=torchvision.datasets.CIFAR10("dataset",train=False,transform=torchvision.transforms.ToTensor(),
+                                     download=True)
+dataloader=DataLoader(dataset,batch_size=1)
+
+class Tudui(nn.Module):
+    def __init__(self):
+        super(Tudui, self).__init__()
+        self.module1 = Sequential(
+            Conv2d(3, 32, 5, padding=2),
+            MaxPool2d(2),
+            Conv2d(32, 32, 5, padding=2),
+            MaxPool2d(2),
+            Conv2d(32, 64, 5, padding=2),
+            MaxPool2d(2),
+            Flatten(),
+            Linear(1024,64),
+            Linear(64,10)
+        )
+
+    def forward(self,x):
+        x=self.module1(x)
+        return x
+
+tudui=Tudui()
+loss=nn.CrossEntropyLoss()
+optim=torch.optim.SGD(tudui.parameters(),lr=0.01)
+for epoch in range(20):
+    running_loss=0.0
+    for data in dataloader:
+        imgs,targets=data
+        outputs=tudui(imgs)
+        result_loss=loss(outputs,targets)
+        optim.zero_grad()###初始化，千万不能忘
+        result_loss.backward()
+        optim.step()
+        running_loss=running_loss+result_loss
+    print(running_loss)
+```
+
+
+
+
+
+## 现有网络模型的使用/修改/
+
+```python
+vgg16_true = torchvision.models.vgg16(pretrained=True)#True表示未进行预训练
+vgg16_false = torchvision.models.vgg16(pretrained=False)
+print(vgg16_false)#用来查看Module有哪些层
+vgg16_true.add_module('add_linear'，nn.Linear(1000,10))#给该模型添加新的模型
+vgg16_false.classifier[6]=nn.Linear(4096,10)#classifier为该模型中某个模型的名字
+```
+
+* print效果如下，显示各层信息
+
+  ![690b9337f5426733fb11bc34bbd04240](../image/690b9337f5426733fb11bc34bbd04240.png)
+
+## 小技巧
+
+* ctrl+p显示函数参数
+* ctrl+alt+L代码格式化
+* ctrl+鼠标左键查看源码
+* .shape查看维数
 
 ## Trouble Shooting
 
@@ -373,6 +907,22 @@ ImportError: DLL load failed: 找不到指定的模块。
 pip uninstall pillow
 pip install pillow
 ```
+
+### Tensorboard无法写入
+
+* 解决
+
+  注意`write.close()`的位置
+
+### 解决tensorboard不能显示每一步的操作
+
+* 解决
+
+```shell
+tensorboard --logdir="<your logs>" --samples_per_plugin=images=1000
+```
+
+> [解决tensorboard每次都是从step3开始，而且不能显示每一步的操作_在网页上打开tensorboard时,为什么step间隔不是1-CSDN博客](https://blog.csdn.net/qq_48471248/article/details/130911446)
 
 ## 其他
 
