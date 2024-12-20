@@ -22,6 +22,8 @@
   - [DDCA](always/ddca.md)
   - [金融行业大模型挑战赛](always/economic_llm.md)
 - [想法 ideas](./ideas.md)
+    - [批量修改名字的工具](ideas/modify_file_name.md)
+    - [甲骨文AI识别](ideas/oracle_recognition.md)
     - [open-cv二值化制作视频滤镜](ideas/opencv_video.md)
     - [图片截屏翻译](picture_translate.md)
     - [梅庵_社会实践](ideas/mei_an.md)

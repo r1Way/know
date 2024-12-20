@@ -829,10 +829,10 @@ for epoch in range(20):
 
 
 
-## 现有网络模型的使用/修改/
+## 现有网络模型的使用/修改
 
 ```python
-vgg16_true = torchvision.models.vgg16(pretrained=True)#True表示未进行预训练
+vgg16_true = torchvision.models.vgg16(pretrained=True)#True表示未进行预训练 新版pretrained这一项似乎已经去掉了，改为了weights=None
 vgg16_false = torchvision.models.vgg16(pretrained=False)
 print(vgg16_false)#用来查看Module有哪些层
 vgg16_true.add_module('add_linear'，nn.Linear(1000,10))#给该模型添加新的模型
@@ -842,6 +842,44 @@ vgg16_false.classifier[6]=nn.Linear(4096,10)#classifier为该模型中某个模�
 * print效果如下，显示各层信息
 
   ![690b9337f5426733fb11bc34bbd04240](../image/690b9337f5426733fb11bc34bbd04240.png)
+
+
+
+## 网络模型的保存与读取
+
+### 保存
+
+```python
+import torch
+import  torchvision
+vgg16=torchvision.models.vgg16(weights=None)
+
+#网络模型=结构+参数
+
+#保存方式1 保存结构及参数
+torch.save(vgg16,"vgg16_method1.pth")
+
+#保存方式2 保存参数（官方推荐）
+torch.save(vgg16.state_dict(),"vgg16_method2.pth")
+```
+
+### 加载
+
+```python
+import  torch
+import torchvision
+
+#加载方式需与保存方式对应
+#方式一加载模型
+#如果为自定义模型，还需要将自定义模型class代码放在此.py里
+model1=torch.load("vgg16_method1.pth")
+print(model1)
+
+#方式二加载模型（官方推荐）
+vgg16=torchvision.models.vgg16(weights=None)
+vgg16.load_state_dict(torch.load("vgg16_method2.pth"))
+print(vgg16)
+```
 
 ## 小技巧
 
