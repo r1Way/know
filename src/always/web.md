@@ -41,30 +41,115 @@
 
 >  https://blog.csdn.net/weixin_36338224/article/details/109105047?fromshare=blogdetail&sharetype=blogdetail&sharerId=109105047&sharerefer=PC&sharesource=r1Way&sharefrom=from_link
 
-## HTML
+## Django
 
-### 基础
+### 命令行
 
-> [HTML 基础 - 学习 Web 开发 | MDN](https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web/HTML_basics)
+* ./mysite下 创建应用
 
-### 注释
+```shell
+py magage.py startapp blog
+```
+
+* 启动项目
+
+```shell
+py manage.py runserver
+```
+
+### 静态文件
+
+> [如何管理静态文件（如图片、JavaScript、CSS） | Django 文档 | Django](https://docs.djangoproject.com/zh-hans/5.1/howto/static-files/)
+
+### 改变模型
+
+1. 编辑models.py
+2. ` py manage.py makemigrations users`  生成迁移文件
+3. `py manage.py migrate`应用数据库迁移
+
+### 创建超级用户管理员
+
+`py manage.py createsuperuser`
+
+admin 123456
+
+### URL调度器
+
+[URL调度器 | Django 文档 | Django](https://docs.djangoproject.com/zh-hans/5.1/topics/http/urls/)
+
+## Django实例
+
+> [编写你的第一个 Django 应用，第 1 部分 | Django 文档 | Django](https://docs.djangoproject.com/zh-hans/5.1/intro/tutorial01/)
+
+## 图片浮出
+
+### html
 
 ```html
-<!-- 4 个级别的标题 -->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>图片浮现效果</title>
+    <link rel="stylesheet" href="script.css">
+</head>
+<body>
+    <div class="content" style="height:200px;">
+        <!-- 这里是页面内容，用于产生滚动条 -->
+    </div>
+    <img src="1.png" alt="浮现的图片" class="fade-in-image">
+    <script src="script.js"></script>
+</body>
+</html>
 ```
 
-## CSS
 
-### 注释
+
+### css
 
 ```css
-/* px 表示“像素（pixel）”: 基础字号为 10 像素 */
+/* 移除了固定定位 */
+.fade-in-image {
+    opacity: 0; /* 初始透明度为0 */
+    /* position: fixed; 移除这一行 */
+    /* bottom: 20px; 移除这一行 */
+    /* right: 20px; 移除这一行 */
+    transition: opacity 1s ease-in-out; /* 透明度变化过渡效果 */
+}
+
+/* 当图片进入视口时的样式 */
+.fade-in-image.visible {
+    opacity: 1; /* 透明度变为1 */
+}
 ```
 
-## JS
 
-## Trouble Shooting
 
-### < script src="scripts/main.js"></script>
+### js
 
-备注：上面将 [``](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/script) 元素放在 HTML 文件的底部附近的原因是浏览器会按照代码在文件中的顺序进行读取。
+```javascript
+document.addEventListener('DOMContentLoaded', function() {
+    // 获取图片元素
+    var img = document.querySelector('.fade-in-image');
+
+    // 创建一个IntersectionObserver实例
+    var observer = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                // 当图片进入视口时，添加'visible'类
+                img.classList.add('visible');
+            } else {
+                // 当图片离开视口时，移除'visible'类
+                img.classList.remove('visible');
+            }
+        });
+    }, {
+        rootMargin: '0px', // 可以设置一个边距，提前触发
+        threshold: 0.4 // 当图片的40%进入视口时触发
+    });
+
+    // 开始观察图片元素
+    observer.observe(img);
+});
+```
+

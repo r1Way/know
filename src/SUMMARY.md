@@ -21,7 +21,9 @@
   - [修图](always/ps.md)
   - [DDCA](always/ddca.md)
   - [金融行业大模型挑战赛](always/economic_llm.md)
+  - [UAV](always/uav_learn.md)
 - [想法 ideas](./ideas.md)
+    - [CONN功能连接](ideas/conn_fmri.md)
     - [批量修改名字的工具](ideas/modify_file_name.md)
     - [甲骨文AI识别](ideas/oracle_recognition.md)
     - [open-cv二值化制作视频滤镜](ideas/opencv_video.md)
@@ -76,6 +78,7 @@
     - [代码关联助手](ideas/code_relate_help.md)
     - [作业管理系统](ideas/work_manage_system.md)
     - [图书排列检错机器人](ideas/book_robot.md)
+    - [梅庵云迹](ideas/meiancloud.md)
     
 - [系统知识 learn](./learn.md)
     - [51单片机学习](learn/51单片机学习.md)
@@ -94,6 +97,7 @@
 * [工具 tools](./tools.md)
   * [实时翻译工具](tools/now_translate.md)
   * [xlsx多sheet更好的筛查工具](tools/search_sheet.md)
+  * [高漫数控板配置](tools/gaoman.md)
 
 - [临时](./temp.md)
     - [处理文件名](temp/dealFileName/temp.md)
