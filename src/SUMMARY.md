@@ -23,6 +23,7 @@
   - [金融行业大模型挑战赛](always/economic_llm.md)
   - [UAV](always/uav_learn.md)
 - [想法 ideas](./ideas.md)
+    - [meiancloud](ideas/meian_web.md)
     - [CONN功能连接](ideas/conn_fmri.md)
     - [批量修改名字的工具](ideas/modify_file_name.md)
     - [甲骨文AI识别](ideas/oracle_recognition.md)
